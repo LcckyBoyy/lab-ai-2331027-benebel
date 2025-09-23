@@ -1,0 +1,107 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Byte-compiled / optimized / DLL files
+*.pyd
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+venv.bak/
+env.bak/
+.python-version
+
+# Packaging / distribution
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+
+# Logs and runtime
+*.log
+logs/
+*.pid
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testing / coverage
+.coverage
+.coverage.*
+.cache/
+.tox/
+.nox/
+.pytest_cache/
+pytestdebug.log
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pyre/
+.mypy_cache/
+.pytype/
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+.jupyter/
+.ipython/
+profile_default/
+
+# Data artifacts (optional - remove if you want to commit data)
+data/
+datasets/
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.npz
+*.npy
+*.xlsx
+*.xls
+
+# Caches
+.matplotlib/
+
+# NLTK downloads (if placed in repo)
+nltk_data/
+
+# Editors / IDE
+.vscode/
+.code-workspace
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
