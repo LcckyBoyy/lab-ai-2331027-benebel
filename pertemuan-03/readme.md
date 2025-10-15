@@ -1,16 +1,25 @@
-# Prediksi Harga Smartphone (`kelas.ipynb`)
+## Prediksi Harga Smartphone — Pertemuan 03
 
-Notebook ini membangun model regresi linear untuk memprediksi harga smartphone berdasarkan spesifikasi seperti penyimpanan, RAM, ukuran layar, kamera, baterai, dan merek. Dataset sumber ada di `data-smartphone.csv` pada folder yang sama.
+Notebook dan artefak di folder ini membangun model regresi untuk memprediksi harga smartphone berdasarkan spesifikasi seperti penyimpanan, RAM, ukuran layar, kamera, baterai, dan merek. Dataset sumber ada di `data-smartphone.csv` pada folder yang sama.
+
+### Struktur Folder
+
+- `latihan.ipynb` — notebook utama: pembersihan data, EDA, pelatihan, evaluasi, dan prediksi contoh.
+- `data-smartphone.csv` — dataset mentah.
+- `smartphone_price_model.joblib` — model tersimpan (opsional; akan ada setelah Anda menyimpannya dari notebook atau sudah disediakan).
+- `requirements.txt` — daftar dependensi untuk lingkungan pertemuan ini.
+
+---
 
 ## Tujuan
 
 - Membersihkan dan menyiapkan data smartphone untuk analisis.
 - Eksplorasi data (EDA) untuk memahami distribusi dan hubungan antar fitur.
-- Membangun model `LinearRegression` (scikit-learn) dengan normalisasi fitur.
+- Membangun model regresi (contoh: `LinearRegression` pada scikit-learn) dengan normalisasi fitur.
 - Mengevaluasi performa model dengan MSE, MAE, RMSE, dan R².
-- Menyediakan fungsi praktis untuk memprediksi harga berdasarkan spesifikasi yang diberikan.
+- Menyediakan cara memuat model tersimpan dan melakukan prediksi cepat.
 
-## Dataset
+## Dataset & Pembersihan
 
 - File: `pertemuan-03/data-smartphone.csv`
 - Kolom yang digunakan (beberapa dibersihkan/diubah tipe):
@@ -18,104 +27,99 @@ Notebook ini membangun model regresi linear untuk memprediksi harga smartphone b
   - `Storage ` (string → int64): hapus `GB` dan spasi. (Perhatikan ada spasi di nama kolom sumber)
   - `RAM ` (string → int64): hapus `GB` dan spasi. (Perhatikan ada spasi di nama kolom sumber)
   - `Screen Size (inches)` (string → float): hapus teks seperti ` (unfolded)` dan ambil angka sebelum tanda `+`.
-  - `Camera (MP)` (string → int64): hapus `MP`, `3D`, huruf/spasi/tanda, pecah dengan `+`, konversi ke angka, ambil nilai maksimum.
-  - `Battery Capacity (mAh)` (numeric)
+  - `Camera (MP)` (string → numerik): hapus `MP`, `3D`, huruf/spasi/tanda, pecah dengan `+`, konversi ke angka, ambil nilai maksimum.
+  - `Battery Capacity (mAh)` (numerik)
   - `Brand` (kategorikal → one-hot encoding)
-  - `Model` (di-drop sebelum pemodelan)
+  - `Model` (umumnya di-drop sebelum pemodelan)
 
-## Alur Notebook
+---
 
-1. Load data (`pandas.read_csv`).
-2. Pemeriksaan awal: dimensi, tipe data, nilai hilang, duplikasi.
-3. Pembersihan kolom string → numerik (lihat bagian Dataset di atas).
-4. EDA (opsional namun tersedia di notebook):
-   - Distribusi merek (`value_counts` + bar chart)
-   - Boxplot per fitur per `Brand`
-   - Scatter `Price ($)` vs fitur numerik (dengan hue `Brand`)
-   - Heatmap korelasi fitur numerik
-5. Pra-pemrosesan:
-   - Drop `Model`
-   - One-Hot Encoding `Brand` → `Brand_Apple`, `Brand_Samsung`, dst.
-   - Skala fitur dengan `MinMaxScaler` (hanya X/fitur, bukan target)
-6. Split data: `train_test_split(test_size=0.3, random_state=42)`
-7. Pelatihan model: `LinearRegression()`
-8. Evaluasi: MSE, MAE, RMSE, R² + scatter plot Harga Asli vs Prediksi
-9. Prediksi contoh: membuat `new_data` dan memprediksi harga
-10. Fungsi utilitas `predict_phone_price(...)` untuk prediksi mudah
+## Instalasi (Windows PowerShell)
 
-## Dependensi
-
-Minimal paket yang diperlukan:
-
-- Python 3.10+
-- jupyter
-- numpy, pandas
-- matplotlib, seaborn
-- scikit-learn
-
-Anda juga dapat memakai `requirements.txt` di root repo untuk lingkungan yang persis.
-
-### Instalasi cepat (Windows PowerShell)
+Direkomendasikan menggunakan virtual environment lokal di folder repo.
 
 ```powershell
-# (opsional) buat virtual environment
+# Dari folder pertemuan-03
 python -m venv .venv; .\.venv\Scripts\Activate.ps1
 
-# instal minimal dependensi
-pip install jupyter numpy pandas matplotlib seaborn scikit-learn
+# Opsi A: install sesuai daftar dependensi folder ini
+pip install -r .\requirements.txt
 
-# atau gunakan requirements yang disertakan di repo (opsional)
-pip install -r ..\requirements.txt
+# Opsi B: install minimal paket yang diperlukan
+pip install jupyter numpy pandas matplotlib seaborn scikit-learn
 ```
 
-## Cara Menjalankan
+Catatan: `requirements.txt` di folder ini memuat paket lengkap (cukup besar). Jika hanya ingin menjalankan analisis dasar, opsi B biasanya sudah cukup.
+
+---
+
+## Cara Menjalankan Notebook
 
 1. Pastikan file `data-smartphone.csv` ada di folder `pertemuan-03/`.
-2. Buka `pertemuan-03/kelas.ipynb` di Jupyter/VS Code.
-3. Jalankan sel-sel dari atas ke bawah:
-   - Bagian pembersihan data harus dijalankan sebelum EDA.
-   - Bagian scaling + split harus dijalankan sebelum pelatihan model.
-   - Jalankan sel evaluasi untuk melihat metrik dan plot.
-   - Jalankan sel prediksi contoh atau pakai fungsi utilitas di bawah.
 
-## Fungsi Prediksi
+2. Buka `latihan.ipynb` di VS Code (Notebook) atau Jupyter Lab/Notebook, lalu pilih kernel Python dari `.venv` yang Anda aktifkan.
 
-Notebook menyediakan fungsi berikut untuk prediksi cepat:
+3. Jalankan sel-sel secara berurutan:
+   - Pembersihan data harus dijalankan sebelum EDA.
+   - Langkah scaling + split data harus dijalankan sebelum pelatihan model.
+   - Jalankan evaluasi untuk melihat MSE/MAE/RMSE/R² dan plot.
+   - (Opsional) Simpan model menjadi `.joblib` untuk dipakai ulang.
+
+---
+
+## Menggunakan Model Tersimpan (`.joblib`)
+
+Jika `smartphone_price_model.joblib` berisi Pipeline (preprocessing + model), Anda bisa langsung memuat dan memprediksi:
 
 ```python
-predict_phone_price(
-    brand="Apple",     # salah satu dari Brand_*
-    storage=256,        # GB
-    ram=8,              # GB
-    camera=108,         # MP (nilai maksimum jika multi-kamera)
-    screen_size=6.8,    # inches
-    battery=5000        # mAh
-)
+import joblib
+import pandas as pd
+
+# muat pipeline
+pipe = joblib.load('pertemuan-03/smartphone_price_model.joblib')
+
+# contoh satu baris data (sesuaikan kolom sesuai yang dipakai saat training)
+sample = pd.DataFrame([
+    {
+        'Storage': 256,            # GB
+        'RAM': 8,                  # GB
+        'Screen Size (inches)': 6.8,
+        'Camera (MP)': 108,
+        'Battery Capacity (mAh)': 5000,
+        'Brand': 'Apple'           # akan di-one-hot oleh pipeline jika sudah termasuk encoder
+    }
+])
+
+pred = pipe.predict(sample)[0]
+print(f"Prediksi harga (USD): {pred:.2f}")
 ```
 
-Fungsi akan:
+Jika file `.joblib` hanya berisi model tanpa preprocessing, jalankan notebook untuk membangun kembali tahap preprocessing (encoder/scaler) dan pastikan urutan/skalanya sama sebelum memanggil `model.predict(...)`.
 
-- Menyusun baris data dengan one-hot brand sesuai pilihan.
-- Menerapkan skala yang sama (scaler yang sudah fit pada data latih).
-- Mengembalikan prediksi harga dalam USD dan menampilkannya.
+---
 
 ## Output yang Dihasilkan
 
-- Metrik evaluasi (dicetak di output sel):
-  - MSE, MAE, RMSE, R²
-- Visualisasi:
-  - Scatter Harga Asli vs Prediksi dengan garis diagonal referensi
-  - (Opsional) Bar chart merek, boxplot, scatter fitur vs harga, heatmap korelasi
+- Metrik evaluasi: MSE, MAE, RMSE, R².
+- Visualisasi: scatter Harga Asli vs Prediksi dengan garis referensi diagonal, dan (opsional) bar chart merek, boxplot, scatter fitur vs harga, heatmap korelasi.
 
-## Catatan & Troubleshooting
+---
 
-- Jika plot tidak muncul, pastikan sel matplotlib/seaborn dijalankan setelah data siap.
-- Jika terjadi `KeyError` pada kolom, cek kembali nama kolom di CSV (beberapa memiliki spasi di akhir: `Storage `, `RAM `).
-- Pastikan menjalankan sel pembersihan `Camera (MP)` sebelum konversi ke int agar formatnya konsisten.
-- Untuk prediksi menggunakan fungsi, jalankan terlebih dahulu sel yang melatih model dan mendefinisikan `scaler`, `x`, `brand_list`, dan `predict_phone_price`.
+## Troubleshooting
 
-## Ide Pengembangan Lanjutan
+- KeyError pada kolom CSV:
+  - Beberapa kolom punya spasi di akhir nama: `Storage `, `RAM `. Sesuaikan penanganannya di kode pembersihan.
+- Paket tidak ditemukan saat import:
+  - Pastikan `.venv` aktif dan dependensi terinstal. Ulangi aktivasi: `.\.venv\Scripts\Activate.ps1`.
+- Versi scikit-learn/joblib berbeda saat memuat `.joblib`:
+  - Jika muncul error unpickling/compatibility, jalankan ulang training di notebook lalu simpan ulang model.
+- Plot tidak muncul:
+  - Pastikan sel visualisasi dijalankan setelah data bersih dan tersedia.
 
-- Simpan model dan scaler (joblib) untuk inferensi di luar notebook.
+---
+
+## Ide Lanjutan
+
+- Simpan pipeline lengkap (preprocessing + estimator) agar prediksi ulang lebih mudah dan konsisten.
 - Coba model lain (Ridge/Lasso/RandomForest/XGBoost) dan lakukan tuning hyperparameter.
-- Tambahkan validasi silang dan pipeline preprocessing terintegrasi (`sklearn.pipeline`).
+- Tambahkan validasi silang dan pipeline `sklearn.pipeline` yang terintegrasi.
